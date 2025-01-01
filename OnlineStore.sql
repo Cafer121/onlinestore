@@ -1,45 +1,44 @@
 CREATE DATABASE OnlineStore;
 
--- اختيار قاعدة البيانات
+
 USE OnlineStore;
 
--- إنشاء جدول المستخدمين
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- معرف المستخدم
-    username VARCHAR(50) NOT NULL, -- اسم المستخدم
-    password VARCHAR(255) NOT NULL, -- كلمة المرور
-    balance DECIMAL(10, 2) DEFAULT 0.0, -- الرصيد
-    role ENUM('seller', 'buyer') NOT NULL -- دور المستخدم (بائع/مشتري)
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    username VARCHAR(50) NOT NULL, 
+    password VARCHAR(255) NOT NULL,
+    balance DECIMAL(10, 2) DEFAULT 0.0,
+    role ENUM('seller', 'buyer') NOT NULL 
 );
 
--- إنشاء جدول المنتجات
+
 CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- معرف المنتج
-    name VARCHAR(100) NOT NULL, -- اسم المنتج
-    price DECIMAL(10, 2) NOT NULL, -- السعر
-    sellerId INT NOT NULL, -- معرف البائع
-    stock INT NOT NULL, -- الكمية المتوفرة
-    FOREIGN KEY (sellerId) REFERENCES users(id) ON DELETE CASCADE -- ربط البائع بجدول المستخدمين
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    name VARCHAR(100) NOT NULL, 
+    price DECIMAL(10, 2) NOT NULL, 
+    sellerId INT NOT NULL,  
+    stock INT NOT NULL, 
+    FOREIGN KEY (sellerId) REFERENCES users(id) ON DELETE CASCADE 
 );
 
--- إنشاء جدول السلال
+
 CREATE TABLE carts (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- معرف السلة
-    userId INT NOT NULL, -- معرف المستخدم
-    productId INT NOT NULL, -- معرف المنتج
-    quantity INT NOT NULL, -- الكمية المطلوبة
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE, -- ربط السلة بالمشتري
-    FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE -- ربط السلة بالمنتج
+    id INT AUTO_INCREMENT PRIMARY KEY,  
+    userId INT NOT NULL, 
+    productId INT NOT NULL, 
+    quantity INT NOT NULL, 
+    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE, 
+    FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE 
 );
 
--- إنشاء جدول الطلبات
+
 CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- معرف الطلب
-    buyerId INT NOT NULL, -- معرف المشتري
-    productId INT NOT NULL, -- معرف المنتج
-    quantity INT NOT NULL, -- الكمية المطلوبة
-    totalPrice DECIMAL(10, 2) NOT NULL, -- السعر الإجمالي
-    deliveryFee DECIMAL(10, 2) DEFAULT 0.0, -- رسوم التوصيل
-    FOREIGN KEY (buyerId) REFERENCES users(id) ON DELETE CASCADE, -- ربط الطلب بالمشتري
-    FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE -- ربط الطلب بالمنتج
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    buyerId INT NOT NULL, 
+    productId INT NOT NULL, 
+    quantity INT NOT NULL, 
+    totalPrice DECIMAL(10, 2) NOT NULL, 
+    deliveryFee DECIMAL(10, 2) DEFAULT 0.0, 
+    FOREIGN KEY (buyerId) REFERENCES users(id) ON DELETE CASCADE,  
+    FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE 
 );
